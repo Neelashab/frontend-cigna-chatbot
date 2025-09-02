@@ -4,11 +4,12 @@ Frontend API client functions to connect to the Cigna Insurance Chatbot backend 
 
 import streamlit as st
 import requests
+import os
 from typing import Optional, Dict, Any
 import json
 
-# Backend service URL from Streamlit secrets
-BACKEND_URL = st.secrets["connections"]["chat_bot"]["url"]
+# Backend service URL from Google Cloud Secret Manager
+BACKEND_URL = os.getenv("BACKEND_URL")
 
 class APIError(Exception):
     """Custom exception for API-related errors"""
