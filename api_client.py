@@ -11,8 +11,16 @@ import json
 # Backend service URL from Google Cloud Secret Manager
 BACKEND_URL = os.getenv("BACKEND_URL")
 
-if not BACKEND_URL: 
-    print("Baby there is no backend url")
+# Debug logging that will be visible
+import sys
+if BACKEND_URL:
+    print(f"✅ BACKEND_URL found: {BACKEND_URL}", file=sys.stderr)
+    st.write(f"✅ Backend URL loaded: {BACKEND_URL}")
+else:
+    print("❌ BACKEND_URL is None or empty!", file=sys.stderr)
+    st.error("❌ BACKEND_URL environment variable is not set!")
+    st.write("All environment variables:")
+    st.write(dict(os.environ))
 
 class APIError(Exception):
     """Custom exception for API-related errors"""
