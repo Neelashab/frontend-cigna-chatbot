@@ -1,14 +1,16 @@
 """
 Frontend API client functions to connect to the Cigna Insurance Chatbot backend service.
 """
+from dotenv import load_dotenv
+from typing import Optional, Dict, Any
 
 import streamlit as st
 import requests
 import os
-from typing import Optional, Dict, Any
 import json
 
 # Backend service URL from Google Cloud Secret Manager
+load_dotenv()
 BACKEND_URL = os.getenv("BACKEND_URL")
 
 # Debug logging that will be visible
