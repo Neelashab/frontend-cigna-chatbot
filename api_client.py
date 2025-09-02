@@ -11,6 +11,9 @@ import json
 # Backend service URL from Google Cloud Secret Manager
 BACKEND_URL = os.getenv("BACKEND_URL")
 
+if not BACKEND_URL: 
+    print("Baby there is no backend url")
+
 class APIError(Exception):
     """Custom exception for API-related errors"""
     pass
