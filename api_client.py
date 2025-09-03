@@ -3,11 +3,14 @@ Frontend API client functions to connect to the Cigna Insurance Chatbot backend 
 """
 from dotenv import load_dotenv
 from typing import Optional, Dict, Any
+import urllib.request
 
 import streamlit as st
 import requests
 import os
 import json
+import google.auth.transport.requests
+import google.oauth2.id_token
 
 # Backend service URL from Google Cloud Secret Manager
 load_dotenv()
@@ -16,6 +19,30 @@ BACKEND_URL = os.getenv("BACKEND_URL")
 class APIError(Exception):
     """Custom exception for API-related errors"""
     pass
+
+def get_auth_headers() -> Dict[str, str]:
+    """
+    Get authentication headers for API requests.
+    
+    Returns:
+        Dict[str, str]: Headers with authorization token
+        
+    Raises:
+        APIError: If authentication fails
+    """
+    try:
+        # Get ID token for authentication
+        auth_req = google.auth.transport.requests.Request()
+        id_token = google.oauth2.id_token.fetch_id_token(auth_req, BACKEND_URL)
+        
+        # Prepare headers with authentication
+        return {
+            "Authorization": f"Bearer {id_token}",
+            "Content-Type": "application/json"
+        }
+    except Exception as e:
+        raise APIError(f"Authentication failed: {str(e)}")
+
 
 def create_session() -> str:
     """
@@ -28,7 +55,8 @@ def create_session() -> str:
         APIError: If the session creation fails
     """
     try:
-        response = requests.post(f"{BACKEND_URL}/session", timeout=30)
+        headers = get_auth_headers()
+        response = requests.post(f"{BACKEND_URL}/session", headers=headers, timeout=30)
         response.raise_for_status()
         
         data = response.json()
@@ -73,8 +101,10 @@ def ask_rag_bot(user_input: str, session_id: Optional[str] = None) -> str:
         session_id = get_or_create_session()
     
     try:
+        headers = get_auth_headers()
         response = requests.post(
             f"{BACKEND_URL}/chat/{session_id}",
+            headers=headers,
             json={"message": user_input},
             timeout=60
         )
@@ -109,8 +139,10 @@ def start_plan_discovery(user_query: str, session_id: Optional[str] = None) -> D
         session_id = get_or_create_session()
     
     try:
+        headers = get_auth_headers()
         response = requests.post(
             f"{BACKEND_URL}/plan-discovery/{session_id}",
+            headers=headers,
             json={"message": user_query},
             timeout=60
         )
@@ -156,8 +188,10 @@ def analyze_plans(session_id: Optional[str] = None) -> Dict[str, Any]:
         raise APIError("Plan discovery must be completed before analyzing plans")
     
     try:
+        headers = get_auth_headers()
         response = requests.post(
             f"{BACKEND_URL}/analyze-plans/{session_id}",
+            headers=headers,
             timeout=90  # Analysis might take longer
         )
         response.raise_for_status()
@@ -193,7 +227,8 @@ def get_session_info(session_id: Optional[str] = None) -> Dict[str, Any]:
         session_id = get_or_create_session()
     
     try:
-        response = requests.get(f"{BACKEND_URL}/session/{session_id}", timeout=30)
+        headers = get_auth_headers()
+        response = requests.get(f"{BACKEND_URL}/session/{session_id}", headers=headers, timeout=30)
         response.raise_for_status()
         
         return response.json()
