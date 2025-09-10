@@ -1,5 +1,5 @@
 """
-Frontend API client functions to connect to the Cigna Insurance Chatbot backend service.
+Frontend API client functions to connect to the Insurance Chatbot backend service.
 """
 from dotenv import load_dotenv
 from typing import Optional, Dict, Any

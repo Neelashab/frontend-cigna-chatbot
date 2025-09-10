@@ -7,7 +7,7 @@ from client_wrapper import chat_with_rag_bot, has_active_session, initialize_cha
 
 def main():
     st.title("Individual Insurance Consultation")
-    st.markdown("Ask me anything about Cigna's insurance options for individuals and families!")
+    st.markdown("Ask me anything about health insurance options for individuals and families!")
     
     # Initialize session if not already active
     if not has_active_session():
@@ -28,7 +28,7 @@ def main():
     if "individual_messages" not in st.session_state:
         st.session_state.individual_messages = []
         # Add welcome message
-        welcome_msg = """Hello! I'm here to help you understand Cigna's insurance options. 
+        welcome_msg = """Hello! I'm here to help you understand your health insurance options. 
 
 I can help you with:
 - Understanding different plan types (HMO, PPO, etc.)
@@ -37,7 +37,7 @@ I can help you with:
 - Finding in-network providers
 - Claims and enrollment processes
 
-What would you like to know about Cigna insurance?"""
+So, how can I help?"""
         st.session_state.individual_messages.append({"role": "assistant", "content": welcome_msg})
     
     # Display chat messages
@@ -46,7 +46,7 @@ What would you like to know about Cigna insurance?"""
             st.markdown(message["content"])
     
     # Chat input
-    if prompt := st.chat_input("Ask me about Cigna insurance options..."):
+    if prompt := st.chat_input("Ask me about your health insurance options..."):
         # Add user message to chat history
         st.session_state.individual_messages.append({"role": "user", "content": prompt})
         

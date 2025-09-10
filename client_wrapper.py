@@ -1,5 +1,5 @@
 """
-Wrapper functions for the Cigna Insurance Chatbot API client.
+Wrapper functions for the Insurance Chatbot API client.
 Provides a simplified interface for frontend components.
 """
 

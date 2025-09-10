@@ -1,5 +1,5 @@
 """
-Cigna Insurance Chatbot Chat Page
+Insurance Chatbot Chat Page
 """
 
 import streamlit as st
@@ -13,9 +13,6 @@ from client_wrapper import (
 )
 
 def main():
-    #st.title("Cigna Insurance Chatbot")
-    # Initialize session if not already active
-    
     if not has_active_session():
         try:
             session_id = initialize_chatbot_session()
@@ -39,7 +36,7 @@ def main():
         col1, col2 = st.columns(2)
         
         with col1:
-            if st.button("An individual wanting to learn more about Cigna's insurance options", use_container_width=True):
+            if st.button("An individual wanting to learn more about my insurance options", use_container_width=True):
                 st.session_state.user_choice = "individual"
                 st.rerun()
         
@@ -65,7 +62,7 @@ def individual_chat_interface():
             st.markdown(message["content"])
     
     # Chat input
-    if prompt := st.chat_input("Ask me about Cigna insurance options..."):
+    if prompt := st.chat_input("Ask me about your insurance options..."):
         # Add user message to chat history
         st.session_state.messages.append({"role": "user", "content": prompt})
         

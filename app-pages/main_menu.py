@@ -6,8 +6,7 @@ import streamlit as st
 from client_wrapper import initialize_chatbot_session, has_active_session
 
 def main():
-    #st.title("Cigna Insurance Chatbot")
-    st.title("Hi! I am an expert on Cigna insurance. What best describes you?")
+    st.title("Hi! I am an expert on health insurance. What best describes you?")
     
     # Initialize session if not already active
     if not has_active_session():
@@ -26,7 +25,7 @@ def main():
     with col1:
         if st.button("An individual", use_container_width=True):
             st.switch_page("app-pages/individual_chat.py")
-        st.markdown("Learn more about Cigna's insurance options for yourself and your family")
+        st.markdown("Learn more about health insurance options for yourself and your family")
     
     with col2:
         if st.button("A business owner", use_container_width=True):
